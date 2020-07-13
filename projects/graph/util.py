@@ -1,5 +1,7 @@
 
 # Note: This Queue class is sub-optimal. Why?
+# popping from front of array is O(n).
+# time complexity for dq SHOULD be O(1)
 class Queue():
     def __init__(self):
         self.queue = []
