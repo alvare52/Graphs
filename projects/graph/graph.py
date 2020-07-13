@@ -5,17 +5,26 @@ from util import Stack, Queue  # These may come in handy
 
 class Graph:
 
+    # Part 1. DONE
     """Represent a graph as a dictionary of vertices mapping labels to edges."""
     def __init__(self):
         self.vertices = {}
 
+    def __str__(self):
+        result = "\n"
+        for vertex in self.vertices:
+            result += f"{vertex}: {self.vertices[vertex]}"
+            result += "\n"
+        return result
+
+    # Part 1. DONE
     def add_vertex(self, vertex_id):
         """
         Add a vertex to the graph.
         """
         self.vertices[vertex_id] = set()
         
-
+    # Part 1. DONE
     def add_edge(self, v1, v2):
         """
         Add a directed edge to the graph.
@@ -24,19 +33,21 @@ class Graph:
         # do opposite too if undirected graph
         # self.vertices[v2].add(v1)
 
+    # Part 1. DONE
     def get_neighbors(self, vertex_id):
         """
         Get all neighbors (edges) of a vertex.
         """
         return self.vertices[vertex_id] # return its value (set)
 
+    # Part 2. DONE
     # data structure for BFT: Queue
     def bft(self, starting_vertex):
         """
         Print each vertex in breadth-first order
         beginning from starting_vertex.
         """
-        pass  # TODO
+        print("BFT called (pt 2)")
         # make a Queue
         q = Queue()
         # enqueue our starting node
@@ -44,7 +55,7 @@ class Graph:
         # make a Set to track if we've been here before
         visited = set()
         # while our Queue isn't empty, we will dequeue whatevers at the front of the line
-        while q.size > 0:
+        while q.size() > 0:
 
             # dequeue whatevers at the front of the line, this is our current_node
             current_node = q.dequeue()
@@ -54,9 +65,9 @@ class Graph:
                 # mark as visited
                 visited.add(current_node)
                 # print it
-                # 
+                print(f"current_node = {current_node}")
                 # get its neighbors
-                neighbors = self.get_neighbors()
+                neighbors = self.get_neighbors(current_node)
                 # for each of the neighbors
                 for neighbor in neighbors:
                     # add to the Queue
@@ -66,11 +77,13 @@ class Graph:
         # if we haven't visited this node yet, mark as visited, print it, get its neighbors
         # for each of the neighbors, add to the Queue
 
+    # Part 3.
     def dft(self, starting_vertex):
         """
         Print each vertex in depth-first order
         beginning from starting_vertex.
         """
+        print("DFT called (pt 3)")
         pass  # TODO
 
         # make a stack
@@ -86,6 +99,7 @@ class Graph:
         # get its neighbors
         # for each of the neighbors, add to our stack
 
+    # Part 4.
     def dft_recursive(self, starting_vertex):
         """
         Print each vertex in depth-first order
@@ -93,24 +107,30 @@ class Graph:
 
         This should be done using recursion.
         """
+        print("DFT Recursive called (pt 4)")
         pass  # TODO
 
+    # Part 5.
     def bfs(self, starting_vertex, destination_vertex):
         """
         Return a list containing the shortest path from
         starting_vertex to destination_vertex in
         breath-first order.
         """
+        print("BFS called (pt 5)")
         pass  # TODO
 
+    # Part 6.
     def dfs(self, starting_vertex, destination_vertex):
         """
         Return a list containing a path from
         starting_vertex to destination_vertex in
         depth-first order.
         """
+        print("DFS called (pt 6)")
         pass  # TODO
-
+    
+    # Part 7.
     def dfs_recursive(self, starting_vertex, destination_vertex):
         """
         Return a list containing a path from
@@ -119,6 +139,7 @@ class Graph:
 
         This should be done using recursion.
         """
+        print("DFS Recursive called (pt 7)")
         pass  # TODO
 
 if __name__ == '__main__':
@@ -146,8 +167,8 @@ if __name__ == '__main__':
     Should print:
         {1: {2}, 2: {3, 4}, 3: {5}, 4: {6, 7}, 5: {3}, 6: {3}, 7: {1, 6}}
     '''
-    print(graph.vertices)
-
+    print(graph) # used to be graph.vertices
+    
     '''
     Valid BFT paths:
         1, 2, 3, 4, 5, 6, 7
