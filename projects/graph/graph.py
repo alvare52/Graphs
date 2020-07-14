@@ -72,10 +72,6 @@ class Graph:
                 for neighbor in neighbors:
                     # add to the Queue
                     q.enqueue(neighbor)
-        # this is our currrent_node
-        
-        # if we haven't visited this node yet, mark as visited, print it, get its neighbors
-        # for each of the neighbors, add to the Queue
 
     # Part 3.
     def dft(self, starting_vertex):
@@ -84,20 +80,38 @@ class Graph:
         beginning from starting_vertex.
         """
         print("DFT called (pt 3)")
-        pass  # TODO
 
         # make a stack
+        stack = Stack()
+
         # push on our starting node
-        
+        stack.push(starting_vertex)
+
         # make a Set to track if we've been here before
+        visited = set()
+
         # while our stack isn't empty
+        while stack.size() > 0:
 
-        # pop off whatever's on top, this is current_node
+            # pop off whatever's on top, this is current_node
+            current_node = stack.pop()
 
-        # if we haven't visited this vertex before
-        # mark as visited
-        # get its neighbors
-        # for each of the neighbors, add to our stack
+            # if we haven't visited this vertex before
+            if current_node not in visited:
+
+                # mark as visited
+                visited.add(current_node)
+
+                # print it
+                print(f"current_node = {current_node}")
+
+                # get its neighbors
+                neighbors = self.get_neighbors(current_node)
+
+                #for each of the neighbors  
+                for neighbor in neighbors:
+                    # add to the Stack
+                    stack.push(neighbor)
 
     # Part 4.
     def dft_recursive(self, starting_vertex):
