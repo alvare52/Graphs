@@ -132,7 +132,38 @@ class Graph:
         breath-first order.
         """
         print("BFS called (pt 5)")
-        pass  # TODO
+        # make a Queue
+        q = Queue()
+        # enqueue our starting node
+        q.enqueue(starting_vertex)
+        # make a Set to track if we've been here before
+        visited = set()
+        # while our Queue isn't empty, we will dequeue whatevers at the front of the line
+        while q.size() > 0:
+
+            # dequeue whatevers at the front of the line, this is our current_node
+            current_node = q.dequeue()
+            
+            # if we haven't visited this node yet
+            if current_node not in visited:
+                # mark as visited
+                visited.add(current_node)
+                # print it
+                print(f"current_node = {current_node}")
+
+                if current_node == destination_vertex:
+                    print(f"current_node == destination_vertex {destination_vertex}")
+                    print("heres the current queue")
+                    result = []
+                    # for node in visited:
+                    #     # result.append(node)
+                    # print(f"result list = {result}")
+                # get its neighbors
+                neighbors = self.get_neighbors(current_node)
+                # for each of the neighbors
+                for neighbor in neighbors:
+                    # add to the Queue
+                    q.enqueue(neighbor)
 
     # Part 6.
     def dfs(self, starting_vertex, destination_vertex):
@@ -142,7 +173,54 @@ class Graph:
         depth-first order.
         """
         print("DFS called (pt 6)")
-        pass  # TODO
+
+        # make a stack
+        stack = Stack()
+
+        # push on our starting node
+        stack.push(starting_vertex)
+
+        # make a Set to track if we've been here before
+        visited = set()
+
+        # while our stack isn't empty
+        while stack.size() > 0:
+
+            # pop off whatever's on top, this is current_node
+            current_node = stack.pop()
+
+            # if we haven't visited this vertex before
+            if current_node not in visited:
+
+                # mark as visited
+                visited.add(current_node)
+
+                # print it
+                print(f"current_node = {current_node}")
+
+                # get its neighbors
+                neighbors = self.get_neighbors(current_node)
+
+                # check to see if any neighbors happen to be the destination vertex 
+                for neighbor in neighbors:
+                    print(f"neighbor = {neighbor}")
+                    if neighbor == destination_vertex:
+                        print(f"found in neighbors, visited = {visited}")
+                        resultList = []
+                        for node in visited:
+                            resultList.append(node)
+                        resultList.append(neighbor)
+                        print(f"resultList = {resultList}")
+                        return resultList
+
+                #for each of the neighbors  
+                for neighbor in neighbors:
+
+                    if neighbor == destination_vertex:
+                        print(f"found in neighbors, visited = {visited}")
+                        print(visited)
+                    # add to the Stack
+                    stack.push(neighbor)
     
     # Part 7.
     def dfs_recursive(self, starting_vertex, destination_vertex):
