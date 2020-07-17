@@ -24,10 +24,10 @@ world = World()
 
 # You may uncomment the smaller graphs for development and testing purposes.
 # map_file = "maps/test_line.txt"
-map_file = "maps/test_cross.txt"
+# map_file = "maps/test_cross.txt"
 # map_file = "maps/test_loop.txt"
 # map_file = "maps/test_loop_fork.txt"
-# map_file = "maps/main_maze.txt"
+map_file = "maps/main_maze.txt"
 
 # Loads the map into a dictionary
 room_graph=literal_eval(open(map_file, "r").read())
@@ -205,6 +205,7 @@ def search_all_rooms():
             # rand_dir = pick_random_direction(exits)
             # print(f"random direction: {rand_dir}")
             
+            print(f"last_direction = {last_direction}")
             path.append(last_direction)
             back_track_path.push(get_opposite_direction(last_direction))
             traverse(last_direction)
@@ -224,14 +225,19 @@ def search_all_rooms():
         neighbors = player.current_room.get_exits()
         # paths_to_explore[player.current_room.id] = []
         last_direction = "end"
+        ran = [] # NEW
         # for each neighbor
         for room in neighbors:
             print(f"room = {room}")
             # check which rooms have been explored already
-            # rand_dir = pick_random_direction(neighbors)
             
             if player.current_room.get_room_in_direction(room).id not in visited:
                 last_direction = room
+                ran.append(room) # NEW
+
+        if len(ran) > 0:
+            last_direction = pick_random_direction(ran)
+
         
     print(f"visited = {visited}")
     print(f"paths to explore = {paths_to_explore}")
