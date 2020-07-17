@@ -23,11 +23,11 @@ world = World()
 
 
 # You may uncomment the smaller graphs for development and testing purposes.
-map_file = "maps/test_line.txt"
+# map_file = "maps/test_line.txt"
 # map_file = "maps/test_cross.txt"
 # map_file = "maps/test_loop.txt"
 # map_file = "maps/test_loop_fork.txt"
-# map_file = "maps/main_maze.txt"
+map_file = "maps/main_maze.txt"
 
 # Loads the map into a dictionary
 room_graph=literal_eval(open(map_file, "r").read())
@@ -41,6 +41,7 @@ player = Player(world.starting_room)
 # Fill this out with directions to walk
 # traversal_path = ['n', 'n']
 def print_room_and_exits():
+    pass
     print(f"* Room {player.current_room.id}, Exits: {player.current_room.get_exits()} *")
 
 # takes in a direction string, and returns the opposite direction as a string
@@ -60,6 +61,11 @@ def pick_random_direction(exits):
     print(f"Exits len = {len(exits)}, 0-{len(exits) - 1}, picked index {index}, final = {exits[index]}")
     return exits[index]
 
+# move in this direction and then print out room and exits
+def traverse(rand_dir):
+    player.travel(rand_dir, True)
+    print_room_and_exits()
+
 # do main work here
 def search_all_rooms():
 
@@ -71,6 +77,17 @@ def search_all_rooms():
 
     # Rooms visited. Key = id, Value = [exits] ?
     visited = {}
+    visited_count = 0
+
+    # keep track of the room we came from and direction
+    last_room = None
+    last_direction = ""
+
+    # keep track of how to get back to last fork
+    back_track_path = []
+
+    #
+    paths_to_explore = {}
 
     # 1. Start at Room 0
     print_room_and_exits()
@@ -78,34 +95,49 @@ def search_all_rooms():
 
     while stack.size() > 0:
 
+        if visited_count == len(room_graph):
+            print("all rooms visited, breaking")
+            break
+
         current = stack.pop()
-        print(f"current = {current}")
+        last_room = current
+        
+
+        # print(f"current = {current}")
         # if we are in a room we have NOT visited yet, add it to visited
-        if player.current_room.id not in visited:
+        if current not in visited:
             # add to visited
-            visited[player.current_room.id] = dict()
+            visited[current] = dict()
+            visited_count += 1
             # add key (id) and value (dict of exits, where key is direction and value is id)
             # then, get this room's exits and add them to the value of visited[current] value dict
-            for room in player.current_room.get_exits():
-                print(f"room = {room}")
-                visited[player.current_room.id][room] = "?"
+            neighbors = player.current_room.get_exits()
+            paths_to_explore[current] = []
+            for room in neighbors:
+                # print(f"room = {room}")
+                # not done with this?
+                visited[current][room] = "?"
+                paths_to_explore[current].append(room)
 
-        print(f"visited: {visited}")
+        # print(f"paths_to_explore for {current} = {paths_to_explore[current]}")
+        # print(f"visited: {visited}")
 
         # 2. Check exits [n, s, w, e] (pick randomint from 1-4, n=1,s=2,etc...)
-        rand_dir =  pick_random_direction(player.current_room.get_exits())
-        print(f"random direction: {rand_dir}")
+        rand_dir = pick_random_direction(player.current_room.get_exits())
+        # print(f"random direction: {rand_dir}")
 
         # add direction we will go in to the path
         path.append(rand_dir)
-        print(f"path now: {path}")
+        # print(f"path now: {path}")
 
         # 4. Take random exit that has NOT been visited ?
-        player.travel(rand_dir, True)
-        print_room_and_exits()
-        
+        last_direction = rand_dir
+        traverse(rand_dir)
+        stack.push(player.current_room.id)
         # now we can add the exits value opposite key to the last room id we were in
     
+    # print(f"last room = {last_room}")
+            
     return path
 
 # search_all_rooms should return a list of directions to follow
